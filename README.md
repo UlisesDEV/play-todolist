@@ -4,6 +4,7 @@ This is your new Play application
 This file will be packaged with your application, when using `activator dist`.
 
 Heroku APP URL: http://desolate-savannah-9377.herokuapp.com/
+Practica 0: http://www.dccia.ua.es/dccia/inf/asignaturas/MADS/practicas/Practica0.html
 
 =================================
 #TASK 1 
