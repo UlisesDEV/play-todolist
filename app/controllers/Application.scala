@@ -9,9 +9,9 @@ import models.Task
 
 
 object Application extends Controller {
-	val taskForm = Form(
-	  "label" -> nonEmptyText
-	)
+
+	val taskForm = Form( "label" -> nonEmptyText )
+
   	def index = Action {
     	Redirect(routes.Application.tasks)
   	}
@@ -20,8 +20,19 @@ object Application extends Controller {
 		Ok(views.html.index(Task.all(), taskForm))
 	}
   
-  	def newTask = TODO
+  	def newTask = Action { implicit request =>
+	  	taskForm.bindFromRequest.fold(
+	    	errors => BadRequest(views.html.index(Task.all(), errors)),
+		    label => {
+		      Task.create(label)
+		      Redirect(routes.Application.tasks)
+		    }
+	  	)
+	}
   
-  	def deleteTask(id: Long) = TODO
+  	def deleteTask(id: Long) = Action { 
+  		Task.delete(id)
+	 	Redirect(routes.Application.tasks)
+	}
 
 }

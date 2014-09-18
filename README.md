@@ -24,3 +24,8 @@ TODO http://www.playframework.com/documentation/2.1.x/ScalaTodoList
 # etiquetamos el último commit con v0.0
 git tag -a v0.0 -m "Versión inicial"
 git push origin --tags
+
+=================================
+#TASK 3
+
+In merge use: --no-ff
