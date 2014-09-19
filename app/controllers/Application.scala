@@ -5,19 +5,26 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import models.Task
+import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 
 
 object Application extends Controller {
-
+	
 	val taskForm = Form( "label" -> nonEmptyText )
 
   	def index = Action {
     	Redirect(routes.Application.tasks)
   	}
 
- 	 def tasks = Action {
+ 	def tasks = Action {
 		Ok(views.html.index(Task.all(), taskForm))
+	}
+
+	def getTask(id: Long) = Action {
+		val task = Json.toJson(Task.getTask(id))
+		Ok(task)
 	}
   
   	def newTask = Action { implicit request =>
