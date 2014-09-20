@@ -11,10 +11,10 @@ Practica 0: http://www.dccia.ua.es/dccia/inf/asignaturas/MADS/practicas/Practica
 
 >**[WIP]** TODO Create API REST
 
->**[RESOLVED] 3.1** GET /tasks/{id}
->**3.2** POST /tasks
->**3.3** GET /tasks
->**3.4** DELETE /tasks/{id}
+> - **[RESOLVED] 3.1** GET /tasks/{id}
+> - **3.2** POST /tasks
+> - **3.3** GET /tasks
+> - **3.4** DELETE /tasks/{id}
 
 
 #TASK 0 [RESOLVED]
