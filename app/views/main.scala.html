@@ -8,8 +8,40 @@
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <script src="@routes.Assets.at("javascripts/hello.js")" type="text/javascript"></script>
+        <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")">
     </head>
     <body>
-        @content
+    	<nav class="navbar navbar-default" role="navigation">
+    		<div class="container-fluid">
+    			<div class="navbar-header">
+			      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+			      <a class="navbar-brand" href="@routes.Application.tasksForms">PLAY-Todolist</a>
+			    </div>
+
+			     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+			     	<!--<ul class="nav navbar-nav">
+			     		<li class="active"><a href="#">Link</a></li>
+			     	</ul>-->
+			     </div>			     
+    		</div>
+
+    	</nav>
+    	<ol class="breadcrumb">
+		  <li><a href="@routes.Application.tasksForms">Home</a></li>
+		  <li class="active">TODO List</li>
+		</ol>
+    	<div class="container-fluid">
+  			<div class="row">
+  				<div class="col-md-offset-2 col-md-8">
+        			@content
+        		</div>
+        	</div>
+    	</div>
+        <script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>
     </body>
 </html>

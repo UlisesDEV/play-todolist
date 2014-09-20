@@ -5,14 +5,16 @@
 # Home page
 GET     /                           controllers.Application.index
 
-# Tasks          
-GET     /tasks                  controllers.Application.tasks
-POST    /tasks                  controllers.Application.newTask
-POST    /tasks/:id/delete       controllers.Application.deleteTask(id: Long)
+# Tasks  form        
+GET     /tasksForms					controllers.Application.tasksForms
+POST    /tasksForms                 controllers.Application.newTaskForms
+POST    /tasksForms/:id/delete      controllers.Application.deleteTaskForms(id: Long)
 
 # API REST
-
-GET /tasks/:id 					controllers.Application.getTask(id: Long)
+GET 	/tasks 					controllers.Application.tasks
+GET 	/tasks/:id 				controllers.Application.getTask(id: Long)
+POST    /tasks                  controllers.Application.newTask
+DELETE 	/tasks/:id 				controllers.Application.deleteTask(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
