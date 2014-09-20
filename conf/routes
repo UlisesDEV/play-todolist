@@ -14,6 +14,7 @@ POST    /tasksForms/:id/delete      controllers.Application.deleteTaskForms(id: 
 GET 	/tasks 					controllers.Application.tasks
 GET 	/tasks/:id 				controllers.Application.getTask(id: Long)
 POST    /tasks                  controllers.Application.newTask
+DELETE 	/tasks/:id 				controllers.Application.deleteTask(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

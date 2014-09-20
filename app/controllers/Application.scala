@@ -52,20 +52,21 @@ object Application extends Controller {
 	}
 
 	def newTask = Action { implicit request =>
-	  	/*taskForm.bindFromRequest.fold(
-	    	errors => BadRequest(views.html.index(Task.all(), errors)),
+	  	taskForm.bindFromRequest.fold(
+	    	errors => BadRequest(""),
 		    label => {
-		    	Ok("ok");
 		      Task.create(label)
-		      Redirect(routes.Application.tasks)
+		      Ok(Json.obj("label" ->label))
 		    }
-	  	)*/
-		Ok("ok");
+	  	)
 	}
   
-  	/*def deleteTask(id: Long) = Action { 
-  		Task.delete(id)
-	 	Redirect(routes.Application.tasks)
-	}*/
+  	def deleteTask(id: Long) = Action {
+  		if(Task.delete(id) > 0){
+  			Ok("")
+  		} else {
+  			NotFound("")
+  		}
+	}
 
 }
