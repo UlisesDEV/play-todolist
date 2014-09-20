@@ -22,9 +22,9 @@ Practica 0: http://www.dccia.ua.es/dccia/inf/asignaturas/MADS/practicas/Practica
 
 >**[RESOLVED]** http://www.playframework.com/documentation/2.1.x/ScalaTodoList
 
->Etiquetamos el último commit con v0.0
->git tag -a v0.0 -m "Versión inicial"
->git push origin --tags
+> - Etiquetamos el último commit con v0.0
+> - git tag -a v0.0 -m "Versión inicial"
+> - git push origin --tags
 
 
 #GIT help
@@ -37,7 +37,7 @@ git checkout -b todo-issueX
 ```
 
 /*Merge conservating all branches*/
-```
+
 ```
 git merge --no-ff todo-issueX
 ```
