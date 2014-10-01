@@ -9,6 +9,7 @@ CREATE TABLE task (
 );
  
 # --- !Downs
- 
+
+SET REFERENTIAL_INTEGRITY FALSE;
 DROP TABLE task;
 DROP SEQUENCE task_id_seq;
