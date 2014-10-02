@@ -52,4 +52,8 @@ object Task {
 	  	} 		
 	  	else{ new Task(0,"",0) }
 	}
+
+	def allFromUser(users_id:Long): List[Task] = DB.withConnection { implicit c =>
+	  	SQL("select * from task where users_id = {users_id}").on('users_id -> users_id).as(task *)
+	}
 }

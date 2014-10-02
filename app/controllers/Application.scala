@@ -40,10 +40,22 @@ object Application extends Controller {
 	 	Redirect(routes.Application.tasksForms)
 	}
 
+	/*Users forms*/
 	val usersForm = Form( "label" -> nonEmptyText )
 
 	def usersForms = Action {
 		Ok(views.html.users(Users.all(), usersForm))
+	}
+
+	def userTasksForms(login: String) = Action {
+		val user = Users.getUserByLogin(login)
+		user match {
+		  case Some(user) =>
+		    Ok(views.html.index(Task.allFromUser(user.id), taskForm))
+		  case None =>
+		    Ok("No existe el usuario")
+		}
+		
 	}
 
 	/*API REST*/
