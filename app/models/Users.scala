@@ -27,13 +27,13 @@ object Users {
 	}
 
   	def all(): List[Users] = DB.withConnection { implicit c =>
-	  	SQL("select * from users").as(task *)
+	  	SQL("select * from users").as(users *)
 	}
   
-  	def create(label: String) {
+  	def create(email: String,login: String,password: String) {
 	  	DB.withConnection { implicit c =>
 	    	SQL("insert into users (email,login,password) values ({email},{login},{password})").on(
-	      		"email" -> email, "login" -> login, "password" -> password
+	      		'email -> email, 'login -> login, 'password -> password
 	    	).executeUpdate()
 	  	}
   	}
@@ -46,12 +46,12 @@ object Users {
 	  	}
   	}
 
-  	def getTask(id: Long): Task = DB.withConnection { implicit c =>
+  	def getTask(id: Long): Users = DB.withConnection { implicit c =>
 	  	val rows = SQL("select * from users where id = {id}").on("id" -> id).apply()
 	  	if(!rows.isEmpty){
 	  		val firstRow = rows.head
-	  		new Task(firstRow[Long]("id"),firstRow[String]("email"),firstRow[String]("login"),firstRow[String]("password"))
+	  		new Users(firstRow[Long]("id"),firstRow[String]("email"),firstRow[String]("login"),firstRow[String]("password"))
 	  	} 		
-	  	else{ new Task(0,"") }
+	  	else{ new Users(0,"","","") }
 	}
 }

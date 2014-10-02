@@ -9,6 +9,10 @@ GET     /                           controllers.Application.index
 GET     /tasksForms					controllers.Application.tasksForms
 POST    /tasksForms                 controllers.Application.newTaskForms
 POST    /tasksForms/:id/delete      controllers.Application.deleteTaskForms(id: Long)
+# Users  form  
+GET     /usersForms					controllers.Application.usersForms
+#POST    /usersForms                 controllers.Application.newUserForms
+#POST    /usersForms/:id/delete      controllers.Application.deleteUserForms(id: Long)
 
 # API REST
 GET 	/tasks 					controllers.Application.tasks

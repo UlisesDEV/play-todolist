@@ -11,7 +11,7 @@ create table users (
 
 ALTER TABLE task ADD users_id bigint;
 
-alter table task add constraint fk_task_task-user foreign key (users_id) references users (id) on delete restrict on update restrict;
+alter table task add constraint fk_task_users foreign key (users_id) references users (id) on delete restrict on update restrict;
 
 insert into users (id,email,login,password) values (1,'user1@user1.com','user1','pass1');
 insert into users (id,email,login,password) values (2,'user2@user2.com','user2','pass2');
@@ -31,3 +31,5 @@ insert into task (id,label,users_id) values (9,'User 3 - Tarea 3 - Id 9',3);
 SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists users;
+
+SET REFERENTIAL_INTEGRITY TRUE;

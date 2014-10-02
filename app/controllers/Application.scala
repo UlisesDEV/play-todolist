@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
 import models.Task
+import models.Users
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
@@ -28,7 +29,7 @@ object Application extends Controller {
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(views.html.index(Task.all(), errors)),
 		    label => {
-		      Task.create(label)
+		      Task.create(label,0)
 		      Redirect(routes.Application.tasksForms)
 		    }
 	  	)
@@ -37,6 +38,12 @@ object Application extends Controller {
 	def deleteTaskForms(id: Long) = Action { 
   		Task.delete(id)
 	 	Redirect(routes.Application.tasksForms)
+	}
+
+	val usersForm = Form( "label" -> nonEmptyText )
+
+	def usersForms = Action {
+		Ok(views.html.users(Users.all(), usersForm))
 	}
 
 	/*API REST*/
@@ -55,7 +62,7 @@ object Application extends Controller {
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
 		    label => {
-		      Task.create(label)
+		      Task.create(label,0)
 		      Ok(Json.obj("label" ->label))
 		    }
 	  	)
