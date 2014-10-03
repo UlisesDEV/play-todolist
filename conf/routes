@@ -11,7 +11,7 @@ POST    /tasksForms                 controllers.Application.newTaskForms
 POST    /tasksForms/:id/delete      controllers.Application.deleteTaskForms(id: Long)
 # Users  form  
 GET     /usersForms					controllers.Application.usersForms
-GET 	/:login/tasks 				controllers.Application.userTasksForms(login: String)
+GET 	/:login/tasksForms 			controllers.Application.userTasksForms(login: String)
 #POST    /usersForms                 controllers.Application.newUserForms
 #POST    /usersForms/:id/delete      controllers.Application.deleteUserForms(id: Long)
 
@@ -20,6 +20,8 @@ GET 	/tasks 					controllers.Application.tasks
 GET 	/tasks/:id 				controllers.Application.getTask(id: Long)
 POST    /tasks                  controllers.Application.newTask
 DELETE 	/tasks/:id 				controllers.Application.deleteTask(id: Long)
+GET 	/:login/tasks 			controllers.Application.userTasks(login: String)
+POST 	/:login/tasks 			controllers.Application.newUserTask(login: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

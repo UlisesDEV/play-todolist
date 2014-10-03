@@ -15,7 +15,7 @@ object Application extends Controller {
 
 	/*FORM TASKS*/
 	
-	val taskForm = Form( "label" -> nonEmptyText )
+	val taskForm = Form( "label" -> nonEmptyText)
 
   	def index = Action {
     	Redirect(routes.Application.tasksForms)
@@ -59,7 +59,12 @@ object Application extends Controller {
 	}
 
 	/*API REST*/
-
+	val apitaskForm = Form[(String, Long)](
+		tuple(
+		    "label" -> nonEmptyText,
+		    "users_id" -> longNumber
+		  )
+		)
 	def tasks = Action {
 		val tasks = Json.toJson(Task.all())
 		Ok(tasks)
@@ -86,6 +91,35 @@ object Application extends Controller {
   		} else {
   			NotFound("")
   		}
+	}
+
+	def userTasks(login: String) = Action {
+		val user = Users.getUserByLogin(login)
+		user match {
+		  case Some(user) =>
+		  val task = Json.toJson(Task.allFromUser(user.id))
+			Ok(task)
+		  case None =>
+		    NotFound("")
+		}
+		
+	}
+
+	def newUserTask(login: String) = Action { implicit request =>
+	  	apitaskForm.bindFromRequest.fold(
+	    	errors => BadRequest(""),
+		    { case(label, users_id) => {
+		    	val user = Users.getUserByLogin(login)
+				user match {
+				  case Some(user) =>
+				  	Task.create(label,user.id)
+		      		Ok(Json.obj("label" -> label, "users_id" -> user.id))
+				  case None =>
+				    NotFound("")
+				}
+		    }
+		}
+	  	)
 	}
 
 }

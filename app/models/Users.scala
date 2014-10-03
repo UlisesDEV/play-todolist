@@ -46,13 +46,14 @@ object Users {
 	  	}
   	}
 
-  	def getUser(id: Long): Users = DB.withConnection { implicit c =>
+  	def getUser(id: Long): Option[Users] = DB.withConnection { implicit c =>
 	  	val rows = SQL("select * from users where id = {id}").on("id" -> id).apply()
 	  	if(!rows.isEmpty){
 	  		val firstRow = rows.head
-	  		new Users(firstRow[Long]("id"),firstRow[String]("email"),firstRow[String]("login"),firstRow[String]("password"))
+	  		val user: Option[Users] = Some(new Users(firstRow[Long]("id"),firstRow[String]("email"),firstRow[String]("login"),firstRow[String]("password")))
+	  		user
 	  	} 		
-	  	else{ new Users(0,"","","") }
+	  	else{ None }
 	}
 
 	def getUserByLogin(login: String): Option[Users] = DB.withConnection { implicit c =>
