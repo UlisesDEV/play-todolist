@@ -15,23 +15,31 @@ object Application extends Controller {
 
 	/*FORM TASKS*/
 	
-	val taskForm = Form( "label" -> nonEmptyText)
+	//val taskForm = Form( "label" -> nonEmptyText,"users_id" -> number)
+
+	val taskForm = Form[(String, Long)](
+		tuple(
+		    "label" -> nonEmptyText,
+		    "users_id" -> longNumber(min = 0)
+		  )
+		)
 
   	def index = Action {
     	Redirect(routes.Application.tasksForms)
   	}
 
  	def tasksForms = Action {
-		Ok(views.html.index(Task.all(), taskForm))
+		Ok(views.html.index(Task.all(), taskForm,Users.all()))
 	}	
   
   	def newTaskForms = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
-	    	errors => BadRequest(views.html.index(Task.all(), errors)),
-		    label => {
-		      Task.create(label,0)
-		      Redirect(routes.Application.tasksForms)
-		    }
+	    	errors => BadRequest(views.html.index(Task.all(), errors,Users.all())),
+	    	{ case(label, users_id) => {
+		    		Task.create(label,users_id)
+		      		Redirect(routes.Application.tasksForms)
+	    		}
+	    	}
 	  	)
 	}
 
@@ -51,7 +59,7 @@ object Application extends Controller {
 		val user = Users.getUserByLogin(login)
 		user match {
 		  case Some(user) =>
-		    Ok(views.html.index(Task.allFromUser(user.id), taskForm))
+		    Ok(views.html.index(Task.allFromUser(user.id), taskForm,Users.all()))
 		  case None =>
 		    Ok("No existe el usuario")
 		}
@@ -78,10 +86,15 @@ object Application extends Controller {
 	def newTask = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
-		    label => {
+	    	{ case(label, users_id) => {
+		    		Task.create(label,users_id)
+		      		Ok(Json.obj("label" ->label,"users_id" -> users_id))
+	    		}
+	    	}
+		    /*label => {
 		      Task.create(label,0)
 		      Ok(Json.obj("label" ->label))
-		    }
+		    }*/
 	  	)
 	}
   

@@ -1,4 +1,4 @@
-@(tasks: List[Task], taskForm: Form[String])
+@(tasks: List[Task], taskForm: Form[(String, Long)], users: List[Users])
 
 @import helper._
 
@@ -52,7 +52,13 @@
             
             @form(routes.Application.newTaskForms) {
                 <div class="form-group">
-                    @inputText(taskForm("label")) 
+                    @inputText(taskForm("label"))
+                    <select name="users_id">
+                        <option value="-1">Chose a user</option>
+                        @users.map { user =>
+                            <option value="@user.id"> @user.login </option>
+                        }
+                    </select>
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-default">
