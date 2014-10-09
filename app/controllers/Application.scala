@@ -14,8 +14,6 @@ import play.api.libs.functional.syntax._
 object Application extends Controller {
 
 	/*FORM TASKS*/
-	
-	//val taskForm = Form( "label" -> nonEmptyText,"users_id" -> number)
 
 	val taskForm = Form[(String, Long)](
 		tuple(
