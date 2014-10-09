@@ -6,13 +6,22 @@ This file will be packaged with your application, when using `activator dist`.
 Heroku APP URL: http://desolate-savannah-9377.herokuapp.com/
 Practica 0: http://www.dccia.ua.es/dccia/inf/asignaturas/MADS/practicas/Practica0.html
 
+#TASK 3
+---------------------------------
+>**[WIP]** TODO Create API REST functions using scala timing functions
+
+> - **[WIP] 3.1** ADD endTime to tasks
+> - **3.2** ADD function today to API Rest
+
+
+
 #TASK 2
 ---------------------------------
 
->**[WIP]** TODO Create API REST
+>**[RESOLVED]** TODO Create API REST with users
 
-> - **[WIP] 2.1** GET /{login}/tasks /*Lista todas las tareas de un usuario. Por ejemplo GET /domingogallardo/tasks/.*/
-> - **2.2** POST /{login}/tasks /*Añade una nueva tarea a un usuario.*/
+> - **[RESOLVED] 2.1** GET /{login}/tasks /*Lista todas las tareas de un usuario. Por ejemplo GET /domingogallardo/tasks/.*/
+> - **[RESOLVED] 2.2** POST /{login}/tasks /*Añade una nueva tarea a un usuario.*/
 
 #TASK 1
 ---------------------------------
