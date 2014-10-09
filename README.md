@@ -6,15 +6,23 @@ This file will be packaged with your application, when using `activator dist`.
 Heroku APP URL: http://desolate-savannah-9377.herokuapp.com/
 Practica 0: http://www.dccia.ua.es/dccia/inf/asignaturas/MADS/practicas/Practica0.html
 
+#TASK 2
+---------------------------------
+
+>**[WIP]** TODO Create API REST
+
+> - **[WIP] 2.1** GET /{login}/tasks /*Lista todas las tareas de un usuario. Por ejemplo GET /domingogallardo/tasks/.*/
+> - **2.2** POST /{login}/tasks /*Añade una nueva tarea a un usuario.*/
+
 #TASK 1
 ---------------------------------
 
 >**[RESOLVED]** TODO Create API REST
 
-> - **[RESOLVED] 3.1** GET /tasks/{id}
-> - **[RESOLVED] 3.2** POST /tasks
-> - **[RESOLVED] 3.3** GET /tasks
-> - **[RESOLVED] 3.4** DELETE /tasks/{id}
+> - **[RESOLVED] 1.1** GET /tasks/{id}
+> - **[RESOLVED] 1.2** POST /tasks
+> - **[RESOLVED] 1.3** GET /tasks
+> - **[RESOLVED] 1.4** DELETE /tasks/{id}
 
 
 #TASK 0 [RESOLVED]

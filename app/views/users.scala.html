@@ -1,11 +1,11 @@
-@(tasks: List[Task], taskForm: Form[(String, Long)], users: List[Users])
+@(users: List[Users], usersForm: Form[String])
 
 @import helper._
 
 @main("Todo list") {
     <h1>TODO List</h1>
-    <h3>@tasks.size task(s)</h3>
-    Pending tasks
+    <h3>@users.size users(s)</h3>
+    Users
     <div class="row">
             <table class="table table-condensed table-striped table-bordered">
                 <thead>
@@ -14,10 +14,13 @@
                             #
                         </th>
                         <th>
-                            User
+                            Email
                         </th>
                         <th>
-                            Label
+                            Login
+                        </th>
+                        <th>
+                            Password
                         </th>
                         <th>
                             Actions
@@ -25,21 +28,25 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @tasks.map { task =>
+                    @users.map { user =>
                     <tr>
                         <td>
-                            @task.id
+                            @user.id
                         </td>
                         <td>
-                            @task.users_id
+                            @user.email
                         </td>
                         <td>
-                            @task.label
+                            @user.login
                         </td>
                         <td>
-                             @form(routes.Application.deleteTaskForms(task.id)) {
+                            @user.password
+                        </td>
+                        <td>
+                            <a class="" href="@routes.Application.userTasksForms(user.login)">Tareas</a>
+                             <!--@form(routes.Application.deleteTaskForms(user.id)) {
                                 <input type="submit" value="Delete">
-                            }
+                            }-->
                         </td>
                     </tr>
                     }
@@ -52,13 +59,7 @@
             
             @form(routes.Application.newTaskForms) {
                 <div class="form-group">
-                    @inputText(taskForm("label"))
-                    <select name="users_id">
-                        <option value="-1">Chose a user</option>
-                        @users.map { user =>
-                            <option value="@user.id"> @user.login </option>
-                        }
-                    </select>
+                    @inputText(usersForm("label")) 
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-default">

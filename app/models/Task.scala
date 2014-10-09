@@ -7,18 +7,20 @@ import play.api.Play.current
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
-case class Task(id: Long, label: String)
+case class Task(id: Long, label: String,users_id: Long)
 	
 object Task {
 	implicit val taskWrites: Writes[Task] = (
 	  (JsPath \ "id").write[Long] and
-	  (JsPath \ "label").write[String]
+	  (JsPath \ "label").write[String] and
+	  (JsPath \ "users_id").write[Long]
 	)(unlift(Task.unapply))
 
   	val task = {
 		get[Long]("id") ~ 
-		get[String]("label") map {
-			case id~label => Task(id, label)
+		get[String]("label") ~ 
+		get[Long]("users_id") map {
+			case id~label~users_id => Task(id, label,users_id)
 		}
 	}
 
@@ -26,10 +28,10 @@ object Task {
 	  	SQL("select * from task").as(task *)
 	}
   
-  	def create(label: String) {
+  	def create(label: String,users_id: Long) {
 	  	DB.withConnection { implicit c =>
-	    	SQL("insert into task (label) values ({label})").on(
-	      		'label -> label
+	    	SQL("insert into task (label,users_id) values ({label},{users_id})").on(
+	      		'label -> label,'users_id -> users_id
 	    	).executeUpdate()
 	  	}
   	}
@@ -46,8 +48,12 @@ object Task {
 	  	val rows = SQL("select * from task where id = {id}").on("id" -> id).apply()
 	  	if(!rows.isEmpty){
 	  		val firstRow = rows.head
-	  		new Task(firstRow[Long]("id"),firstRow[String]("label"))
+	  		new Task(firstRow[Long]("id"),firstRow[String]("label"),firstRow[Long]("users_id"))
 	  	} 		
-	  	else{ new Task(0,"") }
+	  	else{ new Task(0,"",0) }
+	}
+
+	def allFromUser(users_id:Long): List[Task] = DB.withConnection { implicit c =>
+	  	SQL("select * from task where users_id = {users_id}").on('users_id -> users_id).as(task *)
 	}
 }
