@@ -15,9 +15,10 @@ object Application extends Controller {
 
 	/*FORM TASKS*/
 
-	val taskForm = Form[(String, Long)](
+	val taskForm = Form[(String,String, Long)](
 		tuple(
 		    "label" -> nonEmptyText,
+		    "end" -> nonEmptyText,
 		    "users_id" -> longNumber(min = 0)
 		  )
 		)
@@ -33,8 +34,8 @@ object Application extends Controller {
   	def newTaskForms = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(views.html.index(Task.all(), errors,Users.all())),
-	    	{ case(label, users_id) => {
-		    		Task.create(label,users_id)
+	    	{ case(label,end, users_id) => {
+		    		Task.create(label,end,users_id)
 		      		Redirect(routes.Application.tasksForms)
 	    		}
 	    	}
@@ -65,9 +66,10 @@ object Application extends Controller {
 	}
 
 	/*API REST*/
-	val apitaskForm = Form[(String, Long)](
+	val apitaskForm = Form[(String,String, Long)](
 		tuple(
 		    "label" -> nonEmptyText,
+		    "end" -> nonEmptyText,
 		    "users_id" -> longNumber
 		  )
 		)
@@ -84,9 +86,9 @@ object Application extends Controller {
 	def newTask = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
-	    	{ case(label, users_id) => {
-		    		Task.create(label,users_id)
-		      		Ok(Json.obj("label" ->label,"users_id" -> users_id))
+	    	{ case(label,end, users_id) => {
+		    		Task.create(label,end,users_id)
+		      		Ok(Json.obj("label" ->label,"end" -> end,"users_id" -> users_id))
 	    		}
 	    	}
 		    /*label => {
@@ -119,12 +121,12 @@ object Application extends Controller {
 	def newUserTask(login: String) = Action { implicit request =>
 	  	apitaskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
-		    { case(label, users_id) => {
+		    { case(label,end, users_id) => {
 		    	val user = Users.getUserByLogin(login)
 				user match {
 				  case Some(user) =>
-				  	Task.create(label,user.id)
-		      		Ok(Json.obj("label" -> label, "users_id" -> user.id))
+				  	Task.create(label,end,user.id)
+		      		Ok(Json.obj("label" -> label,"end"->end, "users_id" -> user.id))
 				  case None =>
 				    NotFound("")
 				}

@@ -1,4 +1,4 @@
-@(tasks: List[Task], taskForm: Form[(String, Long)], users: List[Users])
+@(tasks: List[Task], taskForm: Form[(String,String, Long)], users: List[Users])
 
 @import helper._
 
@@ -20,6 +20,9 @@
                             Label
                         </th>
                         <th>
+                            End
+                        </th>
+                        <th>
                             Actions
                         </th>
                     </tr>
@@ -35,6 +38,9 @@
                         </td>
                         <td>
                             @task.label
+                        </td>
+                        <td>
+                            @task.end
                         </td>
                         <td>
                              @form(routes.Application.deleteTaskForms(task.id)) {
