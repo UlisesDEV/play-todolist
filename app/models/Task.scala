@@ -29,8 +29,13 @@ object Task {
 		}
 	}
 
-  	def all(): List[Task] = DB.withConnection { implicit c =>
-	  	SQL("select * from task").as(task *)
+  	def all(end: Option[String]): List[Task] = DB.withConnection { implicit c =>
+	  	end match {
+		  case Some(end) =>
+			SQL("select * from task where end < {end}").on("end" -> end).as(task *)
+		  case None =>
+		    SQL("select * from task").as(task *)
+		}
 	}
   
   	def create(label: String,end:String,users_id: Long) {
@@ -61,4 +66,9 @@ object Task {
 	def allFromUser(users_id:Long): List[Task] = DB.withConnection { implicit c =>
 	  	SQL("select * from task where users_id = {users_id}").on('users_id -> users_id).as(task *)
 	}
+
+	/*select * 
+	from TableA 
+	where startdate >= to_timestamp('12-01-2012 21:24:00', 'dd-mm-yyyy hh24:mi:ss')
+	  and startdate <= to_timestamp('12-01-2012 21:25:33', 'dd-mm-yyyy hh24:mi:ss')*/
 }

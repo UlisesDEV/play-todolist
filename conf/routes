@@ -6,7 +6,7 @@
 GET     /                           controllers.Application.index
 
 # Tasks  form        
-GET     /tasksForms					controllers.Application.tasksForms
+GET     /tasksForms					controllers.Application.tasksForms(end: Option[String] ?= None,start: Option[String] ?= None)
 POST    /tasksForms                 controllers.Application.newTaskForms
 POST    /tasksForms/:id/delete      controllers.Application.deleteTaskForms(id: Long)
 # Users  form  
@@ -16,7 +16,7 @@ GET 	/:login/tasksForms 			controllers.Application.userTasksForms(login: String)
 #POST    /usersForms/:id/delete      controllers.Application.deleteUserForms(id: Long)
 
 # API REST
-GET 	/tasks 					controllers.Application.tasks
+GET 	/tasks 					controllers.Application.tasks(end: Option[String] ?= None)
 GET 	/tasks/:id 				controllers.Application.getTask(id: Long)
 POST    /tasks                  controllers.Application.newTask
 DELETE 	/tasks/:id 				controllers.Application.deleteTask(id: Long)

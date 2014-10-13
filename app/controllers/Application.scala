@@ -8,6 +8,10 @@ import models.Task
 import models.Users
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
+import java.util.{Date, Locale}
+import java.text.DateFormat
+import java.text.DateFormat._
+
 
 
 
@@ -24,19 +28,23 @@ object Application extends Controller {
 		)
 
   	def index = Action {
-    	Redirect(routes.Application.tasksForms)
+    	Redirect(routes.Application.tasksForms())
   	}
 
- 	def tasksForms = Action {
-		Ok(views.html.index(Task.all(), taskForm,Users.all()))
+  	/*Me devuelve todas las tareas posteriores a la fecha si lo indican*/
+  	//Ej: http://localhost:9000/tasksForms?end=2009-09-23
+ 	def tasksForms(end: Option[String],start: Option[String]) = Action {
+ 		Ok(views.html.index(Task.all(end), taskForm,Users.all()))
+ 		/*val ide = this.params.get("end")
+ 		Logger.debug(ide)*/
 	}	
   
   	def newTaskForms = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
-	    	errors => BadRequest(views.html.index(Task.all(), errors,Users.all())),
+	    	errors => BadRequest(views.html.index(Task.all(None), errors,Users.all())),
 	    	{ case(label,end, users_id) => {
 		    		Task.create(label,end,users_id)
-		      		Redirect(routes.Application.tasksForms)
+		      		Redirect(routes.Application.tasksForms())
 	    		}
 	    	}
 	  	)
@@ -44,7 +52,7 @@ object Application extends Controller {
 
 	def deleteTaskForms(id: Long) = Action { 
   		Task.delete(id)
-	 	Redirect(routes.Application.tasksForms)
+	 	Redirect(routes.Application.tasksForms())
 	}
 
 	/*Users forms*/
@@ -73,8 +81,8 @@ object Application extends Controller {
 		    "users_id" -> longNumber
 		  )
 		)
-	def tasks = Action {
-		val tasks = Json.toJson(Task.all())
+	def tasks(end: Option[String]) = Action {
+		val tasks = Json.toJson(Task.all(end))
 		Ok(tasks)
 	}
 
