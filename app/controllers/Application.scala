@@ -17,13 +17,12 @@ import java.text.DateFormat._
 
 object Application extends Controller {
 
-	/*FORM TASKS*/
-
-	val taskForm = Form[(String,String, Long)](
+	/* FORM TASKS */
+	val taskForm = Form[(String,Long,Option[String])](
 		tuple(
 		    "label" -> nonEmptyText,
-		    "end" -> nonEmptyText,
-		    "users_id" -> longNumber(min = 0)
+		    "users_id" -> longNumber(min = 0),
+		    "end" -> optional(text)
 		  )
 		)
 
@@ -31,19 +30,17 @@ object Application extends Controller {
     	Redirect(routes.Application.tasksForms())
   	}
 
-  	/*Me devuelve todas las tareas posteriores a la fecha si lo indican*/
-  	//Ej: http://localhost:9000/tasksForms?end=2009-09-23
- 	def tasksForms(end: Option[String],start: Option[String]) = Action {
+  	// Devuelve todas las tareas posteriores a la fecha si lo indican
+  	// Ej: http://localhost:9000/tasksForms?end=2009-09-23
+ 	def tasksForms(end: Option[String]) = Action {
  		Ok(views.html.index(Task.all(end), taskForm,Users.all()))
- 		/*val ide = this.params.get("end")
- 		Logger.debug(ide)*/
 	}	
   
   	def newTaskForms = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(views.html.index(Task.all(None), errors,Users.all())),
-	    	{ case(label,end, users_id) => {
-		    		Task.create(label,end,users_id)
+	    	{ case(label, users_id,end) => {
+		    		Task.create(label,users_id,end)
 		      		Redirect(routes.Application.tasksForms())
 	    		}
 	    	}
@@ -55,7 +52,7 @@ object Application extends Controller {
 	 	Redirect(routes.Application.tasksForms())
 	}
 
-	/*Users forms*/
+	/* FORMS USERS */
 	val usersForm = Form( "label" -> nonEmptyText )
 
 	def usersForms = Action {
@@ -73,39 +70,40 @@ object Application extends Controller {
 		
 	}
 
-	/*API REST*/
-	val apitaskForm = Form[(String,String, Long)](
+	/* API REST */
+	val apitaskForm = Form[(String,Long,Option[String])](
 		tuple(
 		    "label" -> nonEmptyText,
-		    "end" -> nonEmptyText,
-		    "users_id" -> longNumber
+		    "users_id" -> longNumber,
+		    "end" -> optional(text)
 		  )
 		)
+
+	// Devuelve todas las tareas. Si se indica fecha final devuelve las terminadas antes de esa fecha.
 	def tasks(end: Option[String]) = Action {
 		val tasks = Json.toJson(Task.all(end))
 		Ok(tasks)
 	}
 
+	// Devuelve una tarea serializada
 	def getTask(id: Long) = Action {
 		val task = Json.toJson(Task.getTask(id))
 		Ok(task)
 	}
 
+	// Crea una nueva tarea y la retorna serializada.
 	def newTask = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
-	    	{ case(label,end, users_id) => {
-		    		Task.create(label,end,users_id)
+	    	{ case(label, users_id,end) => {
+		    		Task.create(label,users_id,end)
 		      		Ok(Json.obj("label" ->label,"end" -> end,"users_id" -> users_id))
 	    		}
 	    	}
-		    /*label => {
-		      Task.create(label,0)
-		      Ok(Json.obj("label" ->label))
-		    }*/
 	  	)
 	}
-  
+  	
+  	// Elimina una tarea
   	def deleteTask(id: Long) = Action {
   		if(Task.delete(id) > 0){
   			Ok("")
@@ -114,6 +112,7 @@ object Application extends Controller {
   		}
 	}
 
+	// Devuelve las tareas de un usuario si existe.
 	def userTasks(login: String) = Action {
 		val user = Users.getUserByLogin(login)
 		user match {
@@ -126,14 +125,15 @@ object Application extends Controller {
 		
 	}
 
+	// Genera una nueva tarea asignandosela al usuario indicado
 	def newUserTask(login: String) = Action { implicit request =>
 	  	apitaskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
-		    { case(label,end, users_id) => {
+		    { case(label, users_id,end) => {
 		    	val user = Users.getUserByLogin(login)
 				user match {
 				  case Some(user) =>
-				  	Task.create(label,end,user.id)
+				  	Task.create(label,user.id,end)
 		      		Ok(Json.obj("label" -> label,"end"->end, "users_id" -> user.id))
 				  case None =>
 				    NotFound("")
@@ -141,6 +141,20 @@ object Application extends Controller {
 		    }
 		}
 	  	)
+	}
+
+	// Devuelve las tareas terminadas (las que tienen fecha de finalizacion) de un usuario
+	// Ej: http://localhost:9000/user1/tasks/completed
+	def userTasksEnded(login: String) = Action {
+		val user = Users.getUserByLogin(login)
+		user match {
+		  case Some(user) =>
+		  val task = Json.toJson(Task.allFromUserEnded(user.id))
+			Ok(task)
+		  case None =>
+		    NotFound("")
+		}
+		
 	}
 
 }

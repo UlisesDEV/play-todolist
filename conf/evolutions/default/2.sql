@@ -25,7 +25,7 @@ insert into task (id,label,end,users_id) values (5,'User 2 - Tarea 2 - Id 5',NOW
 insert into task (id,label,end,users_id) values (6,'User 2 - Tarea 3 - Id 6',NOW(),2);
 insert into task (id,label,end,users_id) values (7,'User 3 - Tarea 1 - Id 7',NOW(),3);
 insert into task (id,label,end,users_id) values (8,'User 3 - Tarea 2 - Id 8',NOW(),3);
-insert into task (id,label,end,users_id) values (9,'User 3 - Tarea 3 - Id 9',NOW(),3);
+insert into task (id,label,users_id) values (9,'User 3 - Tarea 3 - Id 9',3);
 # --- !Downs
  
 SET REFERENTIAL_INTEGRITY FALSE;

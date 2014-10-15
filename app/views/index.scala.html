@@ -1,6 +1,8 @@
-@(tasks: List[Task], taskForm: Form[(String,String, Long)], users: List[Users])
+
 
 @import helper._
+
+@(tasks: List[Task], taskForm: Form[(String,Long,Option[String])], users: List[Users])
 
 @main("Todo list") {
     <h1>TODO List</h1>
