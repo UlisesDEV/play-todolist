@@ -91,7 +91,7 @@ Routes
 : Todas las tareas completadas de un usuario.
 > Ej: localhost:9000/user1/tasks/completed
 > GET 	/:login/tasks/completed 			controllers.Application.userTasksEnded(login: String)
->> ![enter image description here](/images/tareas_usuario1_completadas.PNG)
+>> ![enter image description here](http://ulisesdev.com/img/tareas_usuario1_completadas.PNG)
 
 #FORMULARIOS
 He creado formularios para comprobar la potencia de Play y las ayudas que este nos puede ofrecer a la hora de crear templates y prototipos. Entre los mismos se encuentran los listados de usuarios, tareas (junto con operaciones CRUD) y las tareas pertenecientes a un usuario en concreto.
@@ -99,14 +99,15 @@ He creado formularios para comprobar la potencia de Play y las ayudas que este n
 ### URLs
 > http://localhost:9000
 > http://localhost:9000/tasksForms
->> ![Formulario para añadir tareas](/images/tareas_add.PNG)
->> ![Formulario para añadir tareas](/images/tareas_add.PNG)
+>> ![Formulario para añadir tareas](http://ulisesdev.com/img/tareas_listado.PNG)
+>
+>> ![Formulario para añadir tareas](http://ulisesdev.com/img/tareas_add.PNG)
 >
 > http://localhost:9000/usersForms
->> ![enter image description here](/images/tareas_add.PNG)
+>> ![enter image description here](http://ulisesdev.com/img/usuarios_listado.PNG)
 >
 > http://localhost:9000/user1/tasksForms
->> ![enter image description here](/images/tareas_listado_usuario1.PNG)
+>> ![enter image description here](http://ulisesdev.com/img/tareas_listado_usuario1.PNG)
 
 
 #PARA FINALIZAR...
