@@ -1,27 +1,38 @@
 # Routes
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
-
 # Home page
 GET     /                           controllers.Application.index
 
-# Tasks  form        
-GET     /tasksForms					controllers.Application.tasksForms
+#### TASKS FORMS ####      
+#EX: GET     /tasksForms					controllers.Application.tasksForms(end: Option[java.util.Date] ?= None)
+
+GET     /tasksForms					controllers.Application.tasksForms(end: Option[String] ?= None)
 POST    /tasksForms                 controllers.Application.newTaskForms
 POST    /tasksForms/:id/delete      controllers.Application.deleteTaskForms(id: Long)
-# Users  form  
+
+### USERS FORMS ####  
 GET     /usersForms					controllers.Application.usersForms
 GET 	/:login/tasksForms 			controllers.Application.userTasksForms(login: String)
 #POST    /usersForms                 controllers.Application.newUserForms
 #POST    /usersForms/:id/delete      controllers.Application.deleteUserForms(id: Long)
 
-# API REST
-GET 	/tasks 					controllers.Application.tasks
+#### API REST ####
+
+# Todas las tareas o las terminadas antes de esa fecha.
+GET 	/tasks 					controllers.Application.tasks(end: Option[String] ?= None)
+# Retorna la tarea con ese ID
 GET 	/tasks/:id 				controllers.Application.getTask(id: Long)
+# Añade una nueva tarea
 POST    /tasks                  controllers.Application.newTask
+# Elimina una tarea
 DELETE 	/tasks/:id 				controllers.Application.deleteTask(id: Long)
+# Devuelve todas las tareas de un usuario si existe.
 GET 	/:login/tasks 			controllers.Application.userTasks(login: String)
+# Añade una nueva tarea a un usuario
 POST 	/:login/tasks 			controllers.Application.newUserTask(login: String)
+#Todas las tareas completadas de un usuario.
+GET 	/:login/tasks/completed 			controllers.Application.userTasksEnded(login: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

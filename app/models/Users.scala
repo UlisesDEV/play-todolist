@@ -7,6 +7,7 @@ import play.api.Play.current
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 
+//TODO Add endTast dateTime
 case class Users(id: Long, email: String,login: String,password: String)
 	
 object Users {

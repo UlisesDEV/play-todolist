@@ -8,11 +8,11 @@ Practica 0: http://www.dccia.ua.es/dccia/inf/asignaturas/MADS/practicas/Practica
 
 #TASK 3
 ---------------------------------
->**[WIP]** TODO Create API REST functions using scala timing functions
+>**[RESOLVED]** TODO Create API REST functions using scala timing functions
 
-> - **[WIP] 3.1** ADD endTime to tasks
-> - **3.2** ADD function today to API Rest
-> - **3.3** ADD function today to API Rest
+> - **[RESOLVED] 3.1** ADD endTime to tasks
+> - **[RESOLVED] 3.2** ADD function end to API Rest
+> - **[RESOLVED] 3.3** ADD function ended user task to API Rest
 
 
 

@@ -44,27 +44,10 @@
                         </td>
                         <td>
                             <a class="" href="@routes.Application.userTasksForms(user.login)">Tareas</a>
-                             <!--@form(routes.Application.deleteTaskForms(user.id)) {
-                                <input type="submit" value="Delete">
-                            }-->
                         </td>
                     </tr>
                     }
                 </tbody>
             </table>
     </div>
-
-    <div class="row">
-            <h4>Add a new task</h4>
-            
-            @form(routes.Application.newTaskForms) {
-                <div class="form-group">
-                    @inputText(usersForm("label")) 
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-default">
-                </div>
-            }
-    </div>
-    
 }
