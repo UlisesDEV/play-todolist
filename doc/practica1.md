@@ -67,25 +67,31 @@ Tareas
 Routes
 : Todas las tareas o las terminadas antes de esa fecha.
 > GET 	/tasks 					controllers.Application.tasks(end: Option[String] ?= None)
+
 : Retorna la tarea con ese ID
 > Ej: localhost:9000/tasks
 > GET 	/tasks/:id 				controllers.Application.getTask(id: Long)
+
 : Añade una nueva tarea
 > Ej: POST localhost:9000/tasks 
 > POST    /tasks                  controllers.Application.newTask
+
 : Elimina una tarea
 > Ej: DELETE localhost:9000/tasks/10
 > DELETE 	/tasks/:id 				controllers.Application.deleteTask(id: Long)
+
 : Devuelve todas las tareas de un usuario si existe.
 > Ej: localhost:9000/user1/tasks
 > GET 	/:login/tasks 			controllers.Application.userTasks(login: String)
+
 : Añade una nueva tarea a un usuario
 > Ej: localhost:9000/user1/tasks
 > POST 	/:login/tasks 			controllers.Application.newUserTask(login: String)
+
 : Todas las tareas completadas de un usuario.
 > Ej: localhost:9000/user1/tasks/completed
 > GET 	/:login/tasks/completed 			controllers.Application.userTasksEnded(login: String)
->> ![enter image description here](tareas_usuario1_completadas.PNG)
+>> ![enter image description here](/images/tareas_usuario1_completadas.PNG)
 
 #FORMULARIOS
 He creado formularios para comprobar la potencia de Play y las ayudas que este nos puede ofrecer a la hora de crear templates y prototipos. Entre los mismos se encuentran los listados de usuarios, tareas (junto con operaciones CRUD) y las tareas pertenecientes a un usuario en concreto.
@@ -93,14 +99,14 @@ He creado formularios para comprobar la potencia de Play y las ayudas que este n
 ### URLs
 > http://localhost:9000
 > http://localhost:9000/tasksForms
->> ![Formulario para añadir tareas](tareas_add.PNG)
->> ![Formulario para añadir tareas](tareas_add.PNG)
+>> ![Formulario para añadir tareas](/images/tareas_add.PNG)
+>> ![Formulario para añadir tareas](/images/tareas_add.PNG)
 >
 > http://localhost:9000/usersForms
->> ![enter image description here](tareas_add.PNG)
+>> ![enter image description here](/images/tareas_add.PNG)
 >
 > http://localhost:9000/user1/tasksForms
->> ![enter image description here](tareas_listado_usuario1.PNG)
+>> ![enter image description here](/images/tareas_listado_usuario1.PNG)
 
 
 #PARA FINALIZAR...
