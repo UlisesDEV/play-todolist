@@ -70,26 +70,34 @@ Routes
 
 : Retorna la tarea con ese ID
 > Ej: localhost:9000/tasks
+> 
+> Ej: GET localhost:9000/tasks?end=2014-10-15
+> 
 > GET 	/tasks/:id 				controllers.Application.getTask(id: Long)
 
 : Añade una nueva tarea
-> Ej: POST localhost:9000/tasks 
+> Ej: POST localhost:9000/tasks
+>  
 > POST    /tasks                  controllers.Application.newTask
 
 : Elimina una tarea
 > Ej: DELETE localhost:9000/tasks/10
+> 
 > DELETE 	/tasks/:id 				controllers.Application.deleteTask(id: Long)
 
 : Devuelve todas las tareas de un usuario si existe.
 > Ej: localhost:9000/user1/tasks
+> 
 > GET 	/:login/tasks 			controllers.Application.userTasks(login: String)
 
 : Añade una nueva tarea a un usuario
 > Ej: localhost:9000/user1/tasks
+> 
 > POST 	/:login/tasks 			controllers.Application.newUserTask(login: String)
 
 : Todas las tareas completadas de un usuario.
 > Ej: localhost:9000/user1/tasks/completed
+> 
 > GET 	/:login/tasks/completed 			controllers.Application.userTasksEnded(login: String)
 >> ![enter image description here](http://ulisesdev.com/img/tareas_usuario1_completadas.PNG)
 
