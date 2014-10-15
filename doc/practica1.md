@@ -66,12 +66,14 @@ Tareas
 #API REST
 Routes
 : Todas las tareas o las terminadas antes de esa fecha.
-> GET 	/tasks 					controllers.Application.tasks(end: Option[String] ?= None)
-
-: Retorna la tarea con ese ID
 > Ej: localhost:9000/tasks
 > 
 > Ej: GET localhost:9000/tasks?end=2014-10-15
+> 
+> GET 	/tasks 					controllers.Application.tasks(end: Option[String] ?= None)
+
+: Retorna la tarea con ese ID
+> Ej: http://localhost:9000/tasks/1
 > 
 > GET 	/tasks/:id 				controllers.Application.getTask(id: Long)
 
