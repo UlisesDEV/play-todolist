@@ -73,9 +73,9 @@ En el ejemplo podemos ver como para que se ejecute la prueba la clase debe exten
 
 #### Importante
 > Al ejecutar los test Scala inicializa la base de datos con la configuracion indicada en las evoluciones.
-> Esto es asi para cada uno de los test, por lo que se puede incializar la base de datos para realizar los test.
+> Esto es asi para cada uno de los test, por lo que se puede incializar la base de datos con datos de prueba para realizar los test.
 
-En el siguiente ejemplo se muestra una prueba al controlador de la aplicacion como si de una peticion externa se tratase,esta nos devolvera una serie de datos en JSON (la serializacion de una tarea en concreto que ya de antemano sabemos que existe y queremos que la devuelva de manera correcta en formato JSON), Ej:
+En el siguiente ejemplo se muestra una prueba al controlador de la aplicacion como si de una peticion externa se tratase, esta nos devolvera una serie de datos en JSON (la serializacion de una tarea en concreto que ya de antemano sabemos que existe y queremos que la devuelva de manera correcta en formato JSON), Ej:
 
 ```
 class ApplicationSpec extends Specification {
