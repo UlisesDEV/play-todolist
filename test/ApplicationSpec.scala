@@ -148,5 +148,27 @@ class ApplicationSpec extends Specification {
         //step(println(contentAsString(home)))
       }
     }
+
+    "all ended tasks from user" in { 
+      running(FakeApplication()) {
+        val user_login = "user1"
+        val Some(home) = route(FakeRequest(GET, "/"+user_login+"/tasks/completed"))
+        status(home) must equalTo(200)
+
+        val json = Json.parse(contentAsString(home)).as[List[Map[String,JsValue]]]
+        json.length must equalTo(3)
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "all ended tasks from fail user" in { 
+      running(FakeApplication()) {
+        val user_login = "usertest"
+        val Some(home) = route(FakeRequest(GET, "/"+user_login+"/tasks/completed"))
+        status(home) must equalTo(404)
+        contentAsString(home) must contain ("El usuario no existe")
+        //step(println(contentAsString(home)))
+      }
+    }
   }   
 }

@@ -158,7 +158,7 @@ object Application extends Controller {
 		  val task = Json.toJson(Task.allFromUserEnded(user.id))
 			Ok(task)
 		  case None =>
-		    NotFound("")
+		    NotFound("El usuario no existe")
 		}
 		
 	}
