@@ -14,7 +14,7 @@ class ModelTaskSpec extends Specification {
 	"Task model" should{
 		"get task" in {
 			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
-				val task = Task.getTask(1)
+				val Some(task) = Task.getTask(1)
 				task.label must equalTo("User 1 - Tarea 1 - Id 1")
 				task.users_id must equalTo(1)
 			}

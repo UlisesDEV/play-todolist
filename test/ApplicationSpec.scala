@@ -54,5 +54,99 @@ class ApplicationSpec extends Specification {
         //step(println(contentAsString(home)))
       }
     }
+
+    "get task in json" in { 
+      running(FakeApplication()) {
+        val id_task = 1
+        val Some(home) = route(FakeRequest(GET, "/tasks/"+id_task))
+        status(home) must equalTo(OK)  
+        contentType(home) must beSome.which(_ == "application/json")
+        contentAsString(home) must contain ("\"id\":1,\"label\":\"User 1 - Tarea 1 - Id 1\"")
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "get fail task in json" in { 
+      running(FakeApplication()) {
+        val id_task = 99
+        val Some(home) = route(FakeRequest(GET, "/tasks/"+id_task))
+        status(home) must equalTo(404)
+        contentAsString(home) must contain ("La tarea no existe")
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "delete task" in { 
+      running(FakeApplication()) {
+        val id_task = 1
+        val Some(home) = route(FakeRequest(DELETE, "/tasks/"+id_task))
+        status(home) must equalTo(200)
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "delete fail task" in { 
+      running(FakeApplication()) {
+        val id_task = 99
+        val Some(home) = route(FakeRequest(DELETE, "/tasks/"+id_task))
+        status(home) must equalTo(404)
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "all tasks from user" in { 
+      running(FakeApplication()) {
+        val user_login = "user1"
+        val Some(home) = route(FakeRequest(GET, "/"+user_login+"/tasks"))
+        status(home) must equalTo(200)
+
+        val json = Json.parse(contentAsString(home)).as[List[Map[String,JsValue]]]
+        json.length must equalTo(3)
+
+        contentAsString(home) must contain ("\"id\":1,\"label\":\"User 1 - Tarea 1 - Id 1\"")
+        contentAsString(home) must contain ("\"id\":2,\"label\":\"User 1 - Tarea 2 - Id 2\"")
+        contentAsString(home) must contain ("\"id\":3,\"label\":\"User 1 - Tarea 3 - Id 3\"")
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "all tasks from fail user" in { 
+      running(FakeApplication()) {
+        val user_login = "usertest"
+        val Some(home) = route(FakeRequest(GET, "/"+user_login+"/tasks"))
+        status(home) must equalTo(404)
+        contentAsString(home) must contain ("El usuario no existe")
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "create task by user" in { 
+      running(FakeApplication()) {
+        val user_login = "user1"
+        val Some(home) = route(FakeRequest(POST, "/"+user_login+"/tasks").withFormUrlEncodedBody(("label", "User 1 - Tarea 4 - Id 11"),("users_id","0"),("end", "2009-09-22 08:08:11")))
+        status(home) must equalTo(200)
+
+        contentAsString(home) must contain ("\"label\":\"User 1 - Tarea 4 - Id 11\",\"end\":\"2009-09-22 08:08:11\",\"users_id\":1")
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "create task by fail user" in { 
+      running(FakeApplication()) {
+        val user_login = "user99"
+        val Some(home) = route(FakeRequest(POST, "/"+user_login+"/tasks").withFormUrlEncodedBody(("label", "User 1 - Tarea 4 - Id 11"),("users_id","0"),("end", "2009-09-22 08:08:11")))
+        status(home) must equalTo(404)
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "create task bad request" in { 
+      running(FakeApplication()) {
+        val user_login = "user1"
+        val Some(home) = route(FakeRequest(POST, "/"+user_login+"/tasks").withFormUrlEncodedBody(("fail", "fail post")))
+        status(home) must equalTo(400)
+        //step(println(contentAsString(home)))
+      }
+    }
   }   
 }

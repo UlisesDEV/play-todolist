@@ -65,13 +65,14 @@ object Task {
   	}
 
   	//Obtener una tarea.
-  	def getTask(id: Long): Task = DB.withConnection { implicit c =>
+  	def getTask(id: Long): Option[Task] = DB.withConnection { implicit c =>
 	  	val rows = SQL("select * from task where id = {id}").on("id" -> id).apply()
 	  	if(!rows.isEmpty){
 	  		val firstRow = rows.head
-	  		new Task(firstRow[Long]("id"),firstRow[String]("label"),firstRow[Long]("users_id"),firstRow[Option[Date]]("end"))
+	  		val task: Option[Task] = Some(new Task(firstRow[Long]("id"),firstRow[String]("label"),firstRow[Long]("users_id"),firstRow[Option[Date]]("end")))
+	  		task
 	  	} 		
-	  	else{ new Task(0,"",0) }
+	  	else{ None }
 	}
 
 	//Listar todas las tareas de un usuario.
