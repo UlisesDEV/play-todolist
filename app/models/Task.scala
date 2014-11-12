@@ -12,7 +12,7 @@ import java.text.DateFormat
 import java.text.DateFormat._
 import java.text.SimpleDateFormat
 
-case class Task(id: Long, label: String,users_id: Long,end: Option[Date] = None)
+case class Task(id: Long, label: String,users_id: Long,category_id: Long,end: Option[Date] = None)
 	
 object Task {
 
@@ -21,6 +21,7 @@ object Task {
 	  (JsPath \ "id").write[Long] and
 	  (JsPath \ "label").write[String] and
 	  (JsPath \ "users_id").write[Long] and
+	  (JsPath \ "category_id").write[Long] and
 	  (JsPath \ "end").write[Option[Date]]
 	)(unlift(Task.unapply))
 
@@ -28,8 +29,9 @@ object Task {
 		get[Long]("id") ~ 
 		get[String]("label") ~
 		get[Long]("users_id") ~
+		get[Long]("category_id") ~
 		get[Option[Date]]("end") map {
-			case id~label~users_id~end=> Task(id,label,users_id,end)
+			case id~label~users_id~category_id~end=> Task(id,label,users_id,category_id,end)
 		}
 	}
 
@@ -47,10 +49,10 @@ object Task {
 	}
   
   	//Crea una tarea.
-  	def create(label: String,users_id: Long,end:Option[String]) {
+  	def create(label: String,users_id: Long,category_id:Long,end:Option[String]) {
 	  	DB.withConnection { implicit c =>
-	    	SQL("insert into task (label,end,users_id) values ({label},{end},{users_id})").on(
-	      		'label -> label,'end -> end,'users_id -> users_id
+	    	SQL("insert into task (label,users_id,category_id,end) values ({label},{users_id},{category_id},{end})").on(
+	      		'label -> label,'users_id -> users_id,'category_id -> category_id,'end -> end
 	    	).executeUpdate()
 	  	}
   	}
@@ -69,7 +71,7 @@ object Task {
 	  	val rows = SQL("select * from task where id = {id}").on("id" -> id).apply()
 	  	if(!rows.isEmpty){
 	  		val firstRow = rows.head
-	  		val task: Option[Task] = Some(new Task(firstRow[Long]("id"),firstRow[String]("label"),firstRow[Long]("users_id"),firstRow[Option[Date]]("end")))
+	  		val task: Option[Task] = Some(new Task(firstRow[Long]("id"),firstRow[String]("label"),firstRow[Long]("users_id"),firstRow[Long]("category_id"),firstRow[Option[Date]]("end")))
 	  		task
 	  	} 		
 	  	else{ None }

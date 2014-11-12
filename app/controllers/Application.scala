@@ -18,10 +18,11 @@ import java.text.DateFormat._
 object Application extends Controller {
 
 	/* FORM TASKS */
-	val taskForm = Form[(String,Long,Option[String])](
+	val taskForm = Form[(String,Long,Long,Option[String])](
 		tuple(
 		    "label" -> nonEmptyText,
 		    "users_id" -> longNumber(min = 0),
+		    "category_id" -> longNumber(min = 0),
 		    "end" -> optional(text)
 		  )
 		)
@@ -39,8 +40,8 @@ object Application extends Controller {
   	def newTaskForms = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(views.html.index(Task.all(None), errors,Users.all())),
-	    	{ case(label, users_id,end) => {
-		    		Task.create(label,users_id,end)
+	    	{ case(label, users_id,category_id,end) => {
+		    		Task.create(label,users_id,category_id,end)
 		      		Redirect(routes.Application.tasksForms())
 	    		}
 	    	}
@@ -71,10 +72,11 @@ object Application extends Controller {
 	}
 
 	/* API REST */
-	val apitaskForm = Form[(String,Long,Option[String])](
+	val apitaskForm = Form[(String,Long,Long,Option[String])](
 		tuple(
 		    "label" -> nonEmptyText,
 		    "users_id" -> longNumber,
+		    "category_id" -> longNumber,
 		    "end" -> optional(text)
 		  )
 		)
@@ -101,9 +103,9 @@ object Application extends Controller {
 	def newTask = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
-	    	{ case(label, users_id,end) => {
-		    		Task.create(label,users_id,end)
-		      		Ok(Json.obj("label" ->label,"end" -> end,"users_id" -> users_id))
+	    	{ case(label,users_id,category_id,end) => {
+		    		Task.create(label,users_id,category_id,end)
+		      		Ok(Json.obj("label" ->label,"users_id" -> users_id,"category_id" -> category_id,"end" -> end))
 	    		}
 	    	}
 	  	)
@@ -135,12 +137,12 @@ object Application extends Controller {
 	def newUserTask(login: String) = Action { implicit request =>
 	  	apitaskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
-		    { case(label, users_id,end) => {
+		    { case(label, users_id,category_id,end) => {
 		    	val user = Users.getUserByLogin(login)
 				user match {
 				  case Some(user) =>
-				  	Task.create(label,user.id,end)
-		      		Ok(Json.obj("label" -> label,"end"->end, "users_id" -> user.id))
+				  	Task.create(label,user.id,category_id,end)
+		      		Ok(Json.obj("label" -> label, "users_id" -> user.id,"category_id"->category_id,"end"->end))
 				  case None =>
 				    NotFound("")
 				}

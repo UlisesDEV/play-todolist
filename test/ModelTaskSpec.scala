@@ -42,7 +42,7 @@ class ModelTaskSpec extends Specification {
 
 		"create task" in {
 			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
-				Task.create("Tarea test 1",1,Some("2009-09-22 08:08:11"))
+				Task.create("Tarea test 1",1,1,Some("2009-09-22 08:08:11"))
 
 				val tasks = Task.all(None)
 				var encontrada = false
