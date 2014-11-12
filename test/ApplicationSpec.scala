@@ -170,5 +170,25 @@ class ApplicationSpec extends Specification {
         //step(println(contentAsString(home)))
       }
     }
+
+    "all categories from user" in { 
+      running(FakeApplication()) {
+        val user_login = "usertest"
+        val Some(home) = route(FakeRequest(GET, "/"+user_login+"/categories"))
+        val json = Json.parse(contentAsString(home)).as[List[Map[String,JsValue]]]
+        json.length must equalTo(3)
+        //step(println(contentAsString(home)))
+      }
+    }
+
+    "all tasks from category" in { 
+      running(FakeApplication()) {
+        val category_id = 1
+        val Some(home) = route(FakeRequest(GET, "/tasks/"+category_id))
+        val json = Json.parse(contentAsString(home)).as[List[Map[String,JsValue]]]
+        json.length must equalTo(3)
+        //step(println(contentAsString(home)))
+      }
+    }
   }   
 }

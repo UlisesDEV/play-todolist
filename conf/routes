@@ -33,6 +33,10 @@ GET 	/:login/tasks 			controllers.Application.userTasks(login: String)
 POST 	/:login/tasks 			controllers.Application.newUserTask(login: String)
 #Todas las tareas completadas de un usuario.
 GET 	/:login/tasks/completed 			controllers.Application.userTasksEnded(login: String)
+#Todas las categorias de un usuario
+GET 	/:login/categories 			controllers.Application.categoriesFromUser(login: String)
+#Todas las tareas de una categoria
+GET 	/tasks/:category_id 			controllers.Application.categoryTasks(category_id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

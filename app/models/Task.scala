@@ -87,6 +87,11 @@ object Task {
 	  	SQL("select * from task where users_id = {users_id} and end IS NOT NULL").on('users_id -> users_id).as(task *)
 	}
 
+	//Listar todas las tareas de un usuario.
+	def allFromCategory(category_id:Long): List[Task] = DB.withConnection { implicit c =>
+	  	SQL("select * from task where category_id = {category_id}").on('category_id -> category_id).as(task *)
+	}
+
 	/*
 	Ejemplo para el futuro:
 

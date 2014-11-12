@@ -6,6 +6,7 @@ import play.api.data._
 import play.api.data.Forms._
 import models.Task
 import models.Users
+import models.Category
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import java.util.{Date, Locale}
@@ -163,6 +164,22 @@ object Application extends Controller {
 		    NotFound("El usuario no existe")
 		}
 		
+	}
+
+	def categoriesFromUser(login: String) = Action {
+		val user = Users.getUserByLogin(login)
+		user match {
+		  case Some(user) =>
+		  val categories = Json.toJson(Category.allFromUser(user.id))
+			Ok(categories)
+		  case None =>
+		    NotFound("El usuario no existe")
+		}
+	}
+
+	def categoryTasks(category_id: Long) = Action {
+		val tasks = Category.all()
+		Ok(Json.toJson(tasks))
 	}
 
 }
