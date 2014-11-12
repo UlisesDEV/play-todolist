@@ -42,7 +42,7 @@ class ModelTaskSpec extends Specification {
 
 		"create task" in {
 			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
-				Task.create("Tarea test 1",1,Some("2009-09-22 08:08:11"))
+				Task.create("Tarea test 1",1,1,Some("2009-09-22 08:08:11"))
 
 				val tasks = Task.all(None)
 				var encontrada = false
@@ -85,6 +85,14 @@ class ModelTaskSpec extends Specification {
 				//val f = new Date(2014, 11, 12)
 				val tasks = Task.all(Some("2014-11-12"))
 				tasks.length must equalTo(1)
+			}
+		}
+
+		"listing tasks by category_id" in {
+			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
+				//val f = new Date(2014, 11, 12)
+				val tasks = Task.allFromCategory(1)
+				tasks.length must equalTo(3)
 			}
 		}
 

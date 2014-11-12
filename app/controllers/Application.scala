@@ -6,6 +6,7 @@ import play.api.data._
 import play.api.data.Forms._
 import models.Task
 import models.Users
+import models.Category
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import java.util.{Date, Locale}
@@ -18,10 +19,11 @@ import java.text.DateFormat._
 object Application extends Controller {
 
 	/* FORM TASKS */
-	val taskForm = Form[(String,Long,Option[String])](
+	val taskForm = Form[(String,Long,Long,Option[String])](
 		tuple(
 		    "label" -> nonEmptyText,
 		    "users_id" -> longNumber(min = 0),
+		    "category_id" -> longNumber(min = 0),
 		    "end" -> optional(text)
 		  )
 		)
@@ -39,8 +41,8 @@ object Application extends Controller {
   	def newTaskForms = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(views.html.index(Task.all(None), errors,Users.all())),
-	    	{ case(label, users_id,end) => {
-		    		Task.create(label,users_id,end)
+	    	{ case(label, users_id,category_id,end) => {
+		    		Task.create(label,users_id,category_id,end)
 		      		Redirect(routes.Application.tasksForms())
 	    		}
 	    	}
@@ -71,10 +73,11 @@ object Application extends Controller {
 	}
 
 	/* API REST */
-	val apitaskForm = Form[(String,Long,Option[String])](
+	val apitaskForm = Form[(String,Long,Long,Option[String])](
 		tuple(
 		    "label" -> nonEmptyText,
 		    "users_id" -> longNumber,
+		    "category_id" -> longNumber,
 		    "end" -> optional(text)
 		  )
 		)
@@ -101,9 +104,9 @@ object Application extends Controller {
 	def newTask = Action { implicit request =>
 	  	taskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
-	    	{ case(label, users_id,end) => {
-		    		Task.create(label,users_id,end)
-		      		Ok(Json.obj("label" ->label,"end" -> end,"users_id" -> users_id))
+	    	{ case(label,users_id,category_id,end) => {
+		    		Task.create(label,users_id,category_id,end)
+		      		Ok(Json.obj("label" ->label,"users_id" -> users_id,"category_id" -> category_id,"end" -> end))
 	    		}
 	    	}
 	  	)
@@ -135,12 +138,12 @@ object Application extends Controller {
 	def newUserTask(login: String) = Action { implicit request =>
 	  	apitaskForm.bindFromRequest.fold(
 	    	errors => BadRequest(""),
-		    { case(label, users_id,end) => {
+		    { case(label, users_id,category_id,end) => {
 		    	val user = Users.getUserByLogin(login)
 				user match {
 				  case Some(user) =>
-				  	Task.create(label,user.id,end)
-		      		Ok(Json.obj("label" -> label,"end"->end, "users_id" -> user.id))
+				  	Task.create(label,user.id,category_id,end)
+		      		Ok(Json.obj("label" -> label, "users_id" -> user.id,"category_id"->category_id,"end"->end))
 				  case None =>
 				    NotFound("")
 				}
@@ -161,6 +164,28 @@ object Application extends Controller {
 		    NotFound("El usuario no existe")
 		}
 		
+	}
+
+	def categoriesFromUser(login: String) = Action {
+		val user = Users.getUserByLogin(login)
+		user match {
+		  case Some(user) =>
+		  val categories = Json.toJson(Category.allFromUser(user.id))
+			Ok(categories)
+		  case None =>
+		    NotFound("El usuario no existe")
+		}
+	}
+
+	def categoryTasks(category_id: Long) = Action {
+		val category = Category.getCategory(category_id)
+		category match {
+		  case Some(category) =>
+		  	val tasks = Json.toJson(Task.allFromCategory(category_id))
+			Ok(tasks)
+		  case None =>
+		    NotFound("La categoria no existe")
+		}
 	}
 
 }
