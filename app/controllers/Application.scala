@@ -87,8 +87,14 @@ object Application extends Controller {
 
 	// Devuelve una tarea serializada
 	def getTask(id: Long) = Action {
-		val task = Json.toJson(Task.getTask(id))
-		Ok(task)
+		val task = Task.getTask(id)
+
+		task match {
+		  case Some(task) =>
+			Ok(Json.toJson(task))
+		  case None =>
+		    NotFound("La tarea no existe")
+		}
 	}
 
 	// Crea una nueva tarea y la retorna serializada.
@@ -120,7 +126,7 @@ object Application extends Controller {
 		  val task = Json.toJson(Task.allFromUser(user.id))
 			Ok(task)
 		  case None =>
-		    NotFound("")
+		    NotFound("El usuario no existe")
 		}
 		
 	}
@@ -152,7 +158,7 @@ object Application extends Controller {
 		  val task = Json.toJson(Task.allFromUserEnded(user.id))
 			Ok(task)
 		  case None =>
-		    NotFound("")
+		    NotFound("El usuario no existe")
 		}
 		
 	}
