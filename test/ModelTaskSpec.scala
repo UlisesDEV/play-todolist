@@ -7,6 +7,7 @@ import play.api.test._
 import play.api.test.Helpers._
 
 import models.Task
+import java.util.Date
 
 @RunWith(classOf[JUnitRunner])
 class ModelTaskSpec extends Specification {
@@ -49,14 +50,14 @@ class ModelTaskSpec extends Specification {
 					if(task.label == "Tarea test 1" && task.users_id == 1) encontrada = true
 				}
 				encontrada must equalTo(true)
-				tasks.length must equalTo(10)
+				tasks.length must equalTo(11)
 			}
 		}
 
 		"listing tasks" in {
 			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
 				val tasks = Task.all(None)
-				tasks.length must equalTo(9)
+				tasks.length must equalTo(10)
 			}
 		}
 
@@ -72,6 +73,20 @@ class ModelTaskSpec extends Specification {
 			}
 		}
 
+		"listing user tasks ended" in {
+			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
+				val tasks = Task.allFromUserEnded(3)
+				tasks.length must equalTo(3)
+			}
+		}
+
+		"listing tasks ended before date" in {
+			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
+				//val f = new Date(2014, 11, 12)
+				val tasks = Task.all(Some("2014-11-12"))
+				tasks.length must equalTo(1)
+			}
+		}
 
 	}
 }

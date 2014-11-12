@@ -69,7 +69,7 @@ class ModelUserSpec extends Specification {
 			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
 				Users.delete(1) must equalTo(1)
 				val tasks = Task.all(None)
-				tasks.length must equalTo(6)
+				tasks.length must equalTo(7)
 			}
 		}
 
