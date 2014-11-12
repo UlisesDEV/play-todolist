@@ -88,5 +88,13 @@ class ModelTaskSpec extends Specification {
 			}
 		}
 
+		"listing tasks by category_id" in {
+			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
+				//val f = new Date(2014, 11, 12)
+				val tasks = Task.allFromCategory(1)
+				tasks.length must equalTo(3)
+			}
+		}
+
 	}
 }

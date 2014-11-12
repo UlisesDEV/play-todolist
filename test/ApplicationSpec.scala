@@ -123,10 +123,10 @@ class ApplicationSpec extends Specification {
     "create task by user" in { 
       running(FakeApplication()) {
         val user_login = "user1"
-        val Some(home) = route(FakeRequest(POST, "/"+user_login+"/tasks").withFormUrlEncodedBody(("label", "User 1 - Tarea 4 - Id 11"),("users_id","0"),("end", "2009-09-22 08:08:11")))
+        val Some(home) = route(FakeRequest(POST, "/"+user_login+"/tasks").withFormUrlEncodedBody(("label", "User 1 - Tarea 4 - Id 11"),("users_id","0"),("category_id","1"),("end", "2009-09-22 08:08:11")))
         status(home) must equalTo(200)
 
-        contentAsString(home) must contain ("\"label\":\"User 1 - Tarea 4 - Id 11\",\"end\":\"2009-09-22 08:08:11\",\"users_id\":1")
+        contentAsString(home) must contain ("\"label\":\"User 1 - Tarea 4 - Id 11\",\"users_id\":1,\"category_id\":1,\"end\":\"2009-09-22 08:08:11\"")
         //step(println(contentAsString(home)))
       }
     }
@@ -134,7 +134,7 @@ class ApplicationSpec extends Specification {
     "create task by fail user" in { 
       running(FakeApplication()) {
         val user_login = "user99"
-        val Some(home) = route(FakeRequest(POST, "/"+user_login+"/tasks").withFormUrlEncodedBody(("label", "User 1 - Tarea 4 - Id 11"),("users_id","0"),("end", "2009-09-22 08:08:11")))
+        val Some(home) = route(FakeRequest(POST, "/"+user_login+"/tasks").withFormUrlEncodedBody(("label", "User 1 - Tarea 4 - Id 11"),("users_id","0"),("category_id","1"),("end", "2009-09-22 08:08:11")))
         status(home) must equalTo(404)
         //step(println(contentAsString(home)))
       }
@@ -173,7 +173,7 @@ class ApplicationSpec extends Specification {
 
     "all categories from user" in { 
       running(FakeApplication()) {
-        val user_login = "usertest"
+        val user_login = "user1"
         val Some(home) = route(FakeRequest(GET, "/"+user_login+"/categories"))
         val json = Json.parse(contentAsString(home)).as[List[Map[String,JsValue]]]
         json.length must equalTo(3)
@@ -184,7 +184,8 @@ class ApplicationSpec extends Specification {
     "all tasks from category" in { 
       running(FakeApplication()) {
         val category_id = 1
-        val Some(home) = route(FakeRequest(GET, "/tasks/"+category_id))
+        val Some(home) = route(FakeRequest(GET, "/tasks/category/"+category_id))
+        status(home) must equalTo(200)
         val json = Json.parse(contentAsString(home)).as[List[Map[String,JsValue]]]
         json.length must equalTo(3)
         //step(println(contentAsString(home)))

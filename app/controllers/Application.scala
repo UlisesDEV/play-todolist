@@ -178,8 +178,14 @@ object Application extends Controller {
 	}
 
 	def categoryTasks(category_id: Long) = Action {
-		val tasks = Category.all()
-		Ok(Json.toJson(tasks))
+		val category = Category.getCategory(category_id)
+		category match {
+		  case Some(category) =>
+		  	val tasks = Json.toJson(Task.allFromCategory(category_id))
+			Ok(tasks)
+		  case None =>
+		    NotFound("La categoria no existe")
+		}
 	}
 
 }

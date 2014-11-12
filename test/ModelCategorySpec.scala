@@ -14,7 +14,7 @@ class ModelCategorySpec extends Specification {
 		"get category" in {
 			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
 				val Some(category) = Category.getCategory(1)
-				category.name must equalTo("Categoria 1 - User 1")
+				category.name must equalTo("Categoria 1 - Usuario 1")
 				category.users_id must equalTo(1)
 			}
 		}
@@ -49,7 +49,7 @@ class ModelCategorySpec extends Specification {
 					if(category.name == "Tarea test 1" && category.users_id == 1) encontrada = true
 				}
 				encontrada must equalTo(true)
-				categories.length must equalTo(11)
+				categories.length must equalTo(10)
 			}
 		}
 

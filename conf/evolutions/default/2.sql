@@ -24,7 +24,7 @@ ALTER TABLE category ADD users_id integer;
 alter table category add constraint fk_category_users foreign key (users_id) references users (id) on delete cascade on update cascade;
 
 ALTER TABLE task ADD category_id integer;
-alter table task add constraint fk_task_category foreign key (category_id) references category (id) on delete cascade on update cascade;
+alter table task add constraint fk_task_category foreign key (category_id) references category (id) on delete set null on update cascade;
 
 insert into users (id,email,login,password) values (1,'user1@user1.com','user1','pass1');
 insert into users (id,email,login,password) values (2,'user2@user2.com','user2','pass2');
