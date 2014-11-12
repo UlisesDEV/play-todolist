@@ -19,6 +19,26 @@ class ModelTaskSpec extends Specification {
 			}
 		}
 
+		"get tasks by users_id" in {
+			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
+				val user_id = 1
+				val tasks = Task.allFromUser(user_id)
+				tasks.length must equalTo(3)
+				var correctas = 0
+				tasks.map { task =>
+					if(task.users_id == user_id) correctas += 1
+				}
+				correctas must equalTo(3)
+			}
+		}
+
+		"get tasks by invalid users_id" in {
+			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
+				val tasks = Task.allFromUser(99)
+				tasks.length must equalTo(0)
+			}
+		}
+
 		"create task" in {
 			running(FakeApplication(additionalConfiguration = inMemoryDatabase())){
 				Task.create("Tarea test 1",1,Some("2009-09-22 08:08:11"))
@@ -29,6 +49,7 @@ class ModelTaskSpec extends Specification {
 					if(task.label == "Tarea test 1" && task.users_id == 1) encontrada = true
 				}
 				encontrada must equalTo(true)
+				tasks.length must equalTo(10)
 			}
 		}
 
@@ -50,5 +71,7 @@ class ModelTaskSpec extends Specification {
 				Task.delete(99) must equalTo(0)
 			}
 		}
+
+
 	}
 }
