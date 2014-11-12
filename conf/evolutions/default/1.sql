@@ -2,11 +2,12 @@
  
 # --- !Ups
 
-CREATE SEQUENCE task_id_seq;
+CREATE SEQUENCE task_id_seq INCREMENT BY 1 NOCACHE NOCYCLE;
 CREATE TABLE task (
-    id integer NOT NULL DEFAULT nextval('task_id_seq'),
+    id integer auto_increment,
     label varchar(255),
-    end datetime NULL
+    end datetime NULL,
+    constraint pk_tasks primary key (id)
 );
  
 # --- !Downs
