@@ -79,6 +79,13 @@ git commit -a -m "Enlace a aplicación desplegada en Heroku"
 git push -u origin master
 ```
 
+/*Create tag and push to remote servers*/
+
+```
+git tag -a v0.X -m "Tag text"
+git push origin --tags
+```
+
 
 #Heroku help
 ---------------------------------
